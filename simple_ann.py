@@ -1,3 +1,4 @@
+import torch.nn.functional as F
 from torch import nn
 
 class Network(nn.Module):
@@ -11,18 +12,12 @@ class Network(nn.Module):
         #output layer,10 unit i.e one for each digit
         self.output = nn.Linear(256,10)
 
-        #define sigmoid activation and softmax output
-        self.sigmoid = nn.Sigmoid()
-        self.sofmax = nn.Softmax(dim=1) # inorder to find softmax across columns
 
     def forward(self,x):
 
-        # pass the input tensor through each of our operations
-
-        x = self.hidden(x)
-        x = self.sigmoid(x)
-        x = self.output(x)
-        x = self.softmax(x)
+        # hidden layer with sigmoid activation
+        x = F.sigmoid(self.hidden(x))
+        x = F.softmax(self.output(x),dim=1)
 
         return x
 
