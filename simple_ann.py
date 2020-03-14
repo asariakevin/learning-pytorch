@@ -3,6 +3,8 @@ import torch.nn.functional as F
 from torch import nn
 from torchvision import datasets, transforms
 
+from collections import OrderedDict
+
 
 # Define a transform to normalize the data
 transform = transforms.Compose([transforms.ToTensor(),
@@ -20,13 +22,16 @@ hidden_size = [128,64]
 output_size = 10
 
 # create the network using nn.Sequential
-model = nn.Sequential(
-            nn.Linear(input_size,hidden_size[0]),
-            nn.ReLU(),
-            nn.Linear(hidden_size[0],hidden_size[1]),
-            nn.ReLU(),
-            nn.Linear(hidden_size[1],output_size),
-            nn.Softmax(dim=1)
+model = nn.Sequential(OrderedDict([
+            ('fc1',nn.Linear(input_size,hidden_size[0])),
+           ('relu1',nn.ReLU()), 
+           ('fc2',nn.Linear(hidden_size[0],hidden_size[1])), 
+           ('relu2',nn.ReLU()), 
+           ('fc3',nn.Linear(hidden_size[1],output_size)), 
+           ('softmax',nn.Softmax(dim=1)) 
+            
+          ])
+
         )
 
 print(model)
