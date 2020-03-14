@@ -14,33 +14,21 @@ trainset = datasets.MNIST('~/.pytorch/MNIST_data/', download=True, train=True, t
 trainloader = torch.utils.data.DataLoader(trainset, batch_size=64, shuffle=True)
 
 
-class Network(nn.Module):
+# hyperparameters for our network
+input_size = 784
+hidden_size = [128,64]
+output_size = 10
 
-    def __init__(self):
-        super().__init__()
+# create the network using nn.Sequential
+model = nn.Sequential(
+            nn.Linear(input_size,hidden_size[0]),
+            nn.ReLU(),
+            nn.Linear(hidden_size[0],hidden_size[1]),
+            nn.ReLU(),
+            nn.Linear(hidden_size[1],output_size),
+            nn.Softmax(dim=1)
+        )
 
-        #inputs to hidden layer a Linear transformation
-        self.fc1 = nn.Linear(784,256)
-
-        #output layer,10 unit i.e one for each digit
-        self.fc2 = nn.Linear(256,10)
-
-        self.sigmoid = nn.Sigmoid()
-        self.softmax = nn.Softmax()
-
-
-    def forward(self,x):
-
-        # hidden layer with sigmoid activation
-        x = self.fc1(x)
-        x = self.sigmoid(x)
-        x = F.softmax(self.fc2(x),dim=1) #don't forget the dim=1 argument
-
-        return x
-
-
-# create the network and look at it's representation
-model = Network()
 print(model)
 
 # grab some data
