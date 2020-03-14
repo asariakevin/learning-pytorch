@@ -1,5 +1,7 @@
+import torch
 import torch.nn.functional as F
 from torch import nn
+from torchvision import datasets, transforms
 
 class Network(nn.Module):
 
